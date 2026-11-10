@@ -1,0 +1,34 @@
+---
+name: synapse-local-detective
+description: Correlates scattered multi-modal local files into unified, cryptographically verified summaries, preventing AI hallucinations.
+---
+
+# Synapse Local Detective
+
+## Compatibility
+- UGREEN AI NAS (UGOS)
+
+## User Goal
+Transform a chaotic folder of mixed media (PDFs, images of notes/receipts, text files) into a coherent, unified project summary where every claim is verifiably linked to its source file.
+
+## Supported CLI Capabilities
+- `file_agent`: List directory, calculate SHA-256 hashes.
+- `photo_agent`: Perform local OCR on images.
+- `document_agent`: Extract text from PDFs/TXT.
+- `knowledge_agent`: Save the final verified markdown report.
+
+## Expert Agent Orchestration Workflow
+1. **Ingestion & Hashing**: The `file_agent` scans the target directory, generating a SHA-256 hash map of all files.
+2. **Multi-Modal Extraction**: The `document_agent` and `photo_agent` extract text/data from supported formats, tagging each snippet with its source file's hash.
+3. **Semantic Clustering**: The orchestrator groups extracted data by semantic similarity (e.g., matching a photo of a receipt to a PDF invoice).
+4. **Zero-Trust Synthesis**: The orchestrator generates a unified summary. **Constraint**: Every sentence must reference a source hash. If data is ambiguous, it is flagged as `[UNVERIFIED]` and excluded from the main narrative.
+5. **Output**: The `knowledge_agent` saves the final report to the NAS, awaiting user confirmation.
+
+## Constraints & Safety
+- **Read-Only Access**: The Skill never modifies or deletes original user files.
+- **No Hallucination Policy**: The Skill is strictly forbidden from inventing facts. Missing sources result in `[UNVERIFIED]` tags, not guesses.
+- **Local-First**: No data, prompts, or hashes are transmitted outside the local NAS environment.
+
+## Third-Party Components
+- Standard UGREEN NAS local agents.
+- Local lightweight embedding model for clustering (e.g., `all-MiniLM-L6-v2`).
